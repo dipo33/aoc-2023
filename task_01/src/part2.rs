@@ -48,7 +48,7 @@ fn get_digit(str: String) -> Option<char> {
     str.chars().next().filter(char::is_ascii_digit)
 }
 
-pub fn execute<P: AsRef<Path>>(path: P, name: &str, print: bool) {
+pub fn execute<P: AsRef<Path>>(path: P, name: &str, print: bool) -> u32 {
     let contents: String = fs::read_to_string(path)
         .expect("Should have been able to read the file");
 
@@ -64,4 +64,6 @@ pub fn execute<P: AsRef<Path>>(path: P, name: &str, print: bool) {
     if print {
         println!("{} Result: {}", name, result);
     }
+
+    result
 }
