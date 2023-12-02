@@ -8,6 +8,7 @@ members = [".", "day_01", "day_02"]
 
 [workspace.dependencies]
 lazy_static = "1.4.0"
+nom = "7.1.3"
 
 [dependencies]
 day_01 = { path = "day_01" }
