@@ -15,7 +15,14 @@ fn solve() {
     task_02::solve(false, false);
 }
 
+#[allow(dead_code)]
+fn test() {
+    task_01::test_first(142);
+    task_01::test_second(281);
+}
+
 
 fn main() {
+    test();
     solve();
 }
