@@ -4,6 +4,22 @@ mod part1;
 mod part2;
 
 
+pub fn test_first(result: u32) {
+    assert_eq!(
+        part1::execute("task_01/inputs/example1.txt", "", false),
+        result,
+        "Task 02 - Part 01 Example Test",
+    );
+}
+
+pub fn test_second(result: u32) {
+    assert_eq!(
+        part2::execute("task_01/inputs/example2.txt", "", false),
+        result + 1,
+        "Task 02 - Part 01 Example Test",
+    );
+}
+
 pub fn solve(first: bool, second: bool) {
     println!("\n-------- [[ Task 02 ]] --------");
     if first {
@@ -27,7 +43,7 @@ pub fn measure(attempts: u32) -> (Duration, Duration) {
 
     let beginning = Instant::now();
     for _ in 0..attempts {
-        part1::execute("task_02/inputs/input.txt", "Part 1", false);
+        part1::execute("task_02/inputs/input.txt", "", false);
     }
     let average_1 = beginning.elapsed() / attempts;
     println!("Part 1 Average Time: {:?}", average_1);
@@ -35,7 +51,7 @@ pub fn measure(attempts: u32) -> (Duration, Duration) {
 
     let beginning = Instant::now();
     for _ in 0..attempts {
-        part2::execute("task_02/inputs/input.txt", "Part 2", false);
+        part2::execute("task_02/inputs/input.txt", "", false);
     }
     let average_2 = beginning.elapsed() / attempts;
     println!("Part 2 Average Time: {:?}", average_2);
