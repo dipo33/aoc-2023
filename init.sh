@@ -1,12 +1,13 @@
 #!/bin/bash
 
-if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 PACKAGE_NAME DISPLAY_NAME"
+if [ "$#" -ne 3 ]; then
+    echo "Usage: $0 PACKAGE_NAME DISPLAY_NAME RESULT_TYPE"
     exit 1
 fi
 
 PACKAGE_NAME=$1
 DISPLAY_NAME=$2
+RESULT_TYPE=$3
 TEMPLATE_DIR="./template"
 CARGO_TOML_PATH="./Cargo.toml"
 TMP_CARGO_TOML_PATH="./tmp.toml"
@@ -16,6 +17,7 @@ cp -r "$TEMPLATE_DIR" "$PACKAGE_NAME"
 # Replace all placeholders
 find "$PACKAGE_NAME" -type f -exec sed -i "s/%%PACKAGE_NAME%%/$PACKAGE_NAME/g" {} +
 find "$PACKAGE_NAME" -type f -exec sed -i "s/%%DISPLAY_NAME%%/$DISPLAY_NAME/g" {} +
+find "$PACKAGE_NAME" -type f -exec sed -i "s/%%RESULT_TYPE%%/$RESULT_TYPE/g" {} +
 
 # Add the new project as dependency to the root cargo.toml
 printf "\n" >> Cargo.toml
