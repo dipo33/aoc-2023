@@ -1,0 +1,13 @@
+[package]
+name = "aoc23"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+members = [".", "task_01"]
+
+[workspace.dependencies]
+lazy_static = "1.4.0"
+
+[dependencies]
+task_01 = { path = "task_01" }
