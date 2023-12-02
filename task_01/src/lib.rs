@@ -4,15 +4,22 @@ mod part1;
 mod part2;
 
 
-pub fn solve() {
+pub fn solve(first: bool, second: bool) {
     println!("\n-------- [[ Task 01 ]] --------");
-    println!("Part 1:");
-    part1::execute("task_01/inputs/example1.txt", "    Example", true);
-    part1::execute("task_01/inputs/input.txt", "   ", true);
+    if first {
+        println!("Part 1:");
+        part1::execute("task_01/inputs/example1.txt", "    Example", true);
+        part1::execute("task_01/inputs/input.txt", "   ", true);
+    }
 
-    println!("\nPart 2:");
-    part2::execute("task_01/inputs/example2.txt", "    Example", true);
-    part2::execute("task_01/inputs/input.txt", "   ", true);
+    if second {
+        if first {
+            println!();
+        }
+        println!("Part 2:");
+        part2::execute("task_01/inputs/example2.txt", "    Example", true);
+        part2::execute("task_01/inputs/input.txt", "   ", true);
+    }
 }
 
 pub fn measure(attempts: u32) -> (Duration, Duration) {
