@@ -15,7 +15,7 @@ pub fn test_first(result: u32) {
 pub fn test_second(result: u32) {
     assert_eq!(
         part2::execute("day_02/inputs/example2.txt", "", false),
-        result + 1,
+        result,
         "Day 02 - Part 02 Example Test",
     );
 }

@@ -15,7 +15,7 @@ pub fn test_first(result: %%RESULT_TYPE%%) {
 pub fn test_second(result: %%RESULT_TYPE%%) {
     assert_eq!(
         part2::execute("%%PACKAGE_NAME%%/inputs/example2.txt", "", false),
-        result + 1,
+        result,
         "%%DISPLAY_NAME%% - Part 02 Example Test",
     );
 }
