@@ -6,7 +6,7 @@ mod part2;
 
 pub fn test_first(result: %%RESULT_TYPE%%) {
     assert_eq!(
-        part1::execute("task_01/inputs/example1.txt", "", false),
+        part1::execute("%%PACKAGE_NAME%%/inputs/example1.txt", "", false),
         result,
         "%%DISPLAY_NAME%% - Part 01 Example Test",
     );
@@ -14,9 +14,9 @@ pub fn test_first(result: %%RESULT_TYPE%%) {
 
 pub fn test_second(result: %%RESULT_TYPE%%) {
     assert_eq!(
-        part2::execute("task_01/inputs/example2.txt", "", false),
+        part2::execute("%%PACKAGE_NAME%%/inputs/example2.txt", "", false),
         result + 1,
-        "%%DISPLAY_NAME%% - Part 01 Example Test",
+        "%%DISPLAY_NAME%% - Part 02 Example Test",
     );
 }
 

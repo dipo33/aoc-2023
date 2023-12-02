@@ -1,13 +1,16 @@
 #!/bin/bash
 
-if [ "$#" -ne 3 ]; then
-    echo "Usage: $0 PACKAGE_NAME DISPLAY_NAME RESULT_TYPE"
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 DAY RESULT_TYPE"
     exit 1
 fi
 
-PACKAGE_NAME=$1
-DISPLAY_NAME=$2
-RESULT_TYPE=$3
+DAY=$1
+RESULT_TYPE=$2
+
+FORMATTED_DAY=$(if [ "$DAY" -lt 10 ]; then echo "0$DAY"; else echo "$DAY"; fi)
+PACKAGE_NAME="day_$FORMATTED_DAY"
+DISPLAY_NAME="Day $FORMATTED_DAY"
 TEMPLATE_DIR="./template"
 CARGO_TOML_PATH="./Cargo.toml"
 TMP_CARGO_TOML_PATH="./tmp.toml"
@@ -42,7 +45,7 @@ sed -i "s/%%PACKAGE_NAME%%/$PACKAGE_NAME/g" $CARGO_TOML_PATH
 
 # Download task input
 source .env
-curl -s -b "session=$AOC_SESSION_COOKIE" https://adventofcode.com/2023/day/1/input > "$PACKAGE_NAME/inputs/input.txt"
+curl -s -b "session=$AOC_SESSION_COOKIE" "https://adventofcode.com/2023/day/$DAY/input" > "$PACKAGE_NAME/inputs/input.txt"
 touch "$PACKAGE_NAME/inputs/example1.txt"
 touch "$PACKAGE_NAME/inputs/example2.txt"
 
