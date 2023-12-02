@@ -38,4 +38,8 @@ mv $TMP_CARGO_TOML_PATH $CARGO_TOML_PATH
 # Replace placeholders inside root Cargo.toml
 sed -i "s/%%PACKAGE_NAME%%/$PACKAGE_NAME/g" $CARGO_TOML_PATH
 
+# Download task input
+source .env
+curl -s -b "session=$AOC_SESSION_COOKIE" https://adventofcode.com/2023/day/1/input > "$PACKAGE_NAME/inputs/input.txt"
+
 echo "Project $PACKAGE_NAME created successfully"
