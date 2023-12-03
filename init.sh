@@ -45,6 +45,8 @@ sed -i "s/%%PACKAGE_NAME%%/$PACKAGE_NAME/g" $CARGO_TOML_PATH
 
 # Download task input
 source .env
+
+mkdir "$PACKAGE_NAME/inputs"
 curl -s -b "session=$AOC_SESSION_COOKIE" "https://adventofcode.com/2023/day/$DAY/input" > "$PACKAGE_NAME/inputs/input.txt"
 touch "$PACKAGE_NAME/inputs/example1.txt"
 touch "$PACKAGE_NAME/inputs/example2.txt"
