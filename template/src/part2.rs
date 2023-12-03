@@ -6,9 +6,11 @@ pub fn execute<P: AsRef<Path>>(path: P, name: &str, print: bool) -> %%RESULT_TYP
     let contents: String = fs::read_to_string(path)
         .expect("Should have been able to read the file");
 
+    let result: %%RESULT_TYPE%% = %%RESULT_TYPE%%::default();
+
     if print {
-        println!("{} Result: {}", name, %%RESULT_TYPE%%::default());
+        println!("{} Result: {}", name, result);
     }
 
-    %%RESULT_TYPE%%::default()
+    result
 }
