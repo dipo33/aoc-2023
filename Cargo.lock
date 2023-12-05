@@ -8,6 +8,7 @@ version = "0.1.0"
 dependencies = [
  "day_01",
  "day_02",
+ "day_03",
 ]
 
 [[package]]
@@ -22,6 +23,14 @@ name = "day_02"
 version = "0.1.0"
 dependencies = [
  "nom",
+]
+
+[[package]]
+name = "day_03"
+version = "0.1.0"
+dependencies = [
+ "nom",
+ "typed-arena",
 ]
 
 [[package]]
@@ -51,3 +60,9 @@ dependencies = [
  "memchr",
  "minimal-lexical",
 ]
+
+[[package]]
+name = "typed-arena"
+version = "2.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6af6ae20167a9ece4bcb41af5b80f8a1f1df981f6391189ce00fd257af04126a"
