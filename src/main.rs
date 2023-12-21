@@ -2,7 +2,6 @@ use day_01;
 use day_02;
 use day_03;
 
-
 #[allow(dead_code)]
 fn measure() {
     let attempts: u32 = 100;
@@ -15,7 +14,7 @@ fn measure() {
 fn solve() {
     day_01::solve(true, true);
     day_02::solve(true, true);
-    day_03::solve(true, false);
+    day_03::solve(true, true);
 }
 
 #[allow(dead_code)]
@@ -32,7 +31,7 @@ fn test() {
 
 
 fn main() {
-    measure();
     test();
     solve();
+    measure();
 }

@@ -1,96 +1,90 @@
-pub enum SchematicItem {
-    Blank,
+pub type Position = (i32, i32);
+
+pub fn neighbours((x, y): Position) -> Vec<Position> {
+    vec![
+        (x - 1, y - 1),
+        (x, y - 1),
+        (x + 1, y - 1),
+        (x - 1, y),
+        (x + 1, y),
+        (x - 1, y + 1),
+        (x, y + 1),
+        (x + 1, y + 1),
+    ]
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum Item {
     Symbol(char),
-    PartLabel { part_number: u32, left: usize, right: usize },
+    PartLabel(u32),
 }
 
-pub struct Schematic {
-    pub grid: Vec<Vec<SchematicItem>>,
+pub enum BlueprintItem {
+    Item(Item),
+    LeftRedirect(u8),
+    Blank,
 }
 
-impl Schematic {
-    pub fn is_within_grid(&self, x: i32, y: i32) -> bool {
-        x >= 0 && x < self.grid[0].len() as i32 && y >= 0 && y < self.grid.len() as i32
-    }
-    pub fn iter_with_positions(&self) -> impl Iterator<Item=(&SchematicItem, usize, usize)> {
-        self.grid.iter().enumerate().flat_map(|(y, row)| {
-            row.iter().enumerate().map(move |(x, item)| (item, x, y))
-        })
-    }
+pub struct Blueprint {
+    pub grid: Vec<Vec<BlueprintItem>>,
+}
 
-    pub fn is_part_from_engine(&self, x: usize, y: usize) -> bool {
-        return match self.grid[y][x] {
-            SchematicItem::PartLabel { left, .. } => {
-                if left == 0 {
-                    self.item_surroundings(x, y)
-                        .iter()
-                        .any(|&(x, y)| matches!(self.grid[y][x], SchematicItem::Symbol(_)))
-                } else {
-                    false
-                }
-            }
-            _ => false,
-        };
+impl Blueprint {
+    pub fn new(grid: Vec<Vec<BlueprintItem>>) -> Self {
+        Self { grid }
     }
 
-    pub fn is_part_gear(&self, x: usize, y: usize) -> bool {
-        return match self.grid[y][x] {
-            SchematicItem::Symbol(c) => {
-                if c == '*' {
-                    self.item_surroundings(x, y)
-                        .iter()
-                        .any(|&(x, y)| matches!(self.grid[y][x], SchematicItem::Symbol(_)))
-                } else {
-                    false
-                }
-            }
-            _ => false,
-        };
+    pub fn pos_iter(&self) -> BlueprintPosIter {
+        BlueprintPosIter::new(self)
     }
 
-    pub fn item_surroundings(&self, x: usize, y: usize) -> Vec<(usize, usize)> {
-        let (ix, iy) = (x as i32, y as i32);
-        match self.grid[y][x] {
-            SchematicItem::PartLabel { left, right, .. } => {
-                let (left, right) = (left as i32, right as i32);
-                let mut surroundings = vec![
-                    (ix - left - 1, iy),
-                    (ix + right + 1, iy),
-                ];
+    fn within(&self, (x, y): Position) -> bool {
+        x >= 0 && y >= 0 && y < self.grid.len() as i32 && x < self.grid[0].len() as i32
+    }
 
-                for i in (ix - left - 1)..(ix + right + 2) {
-                    surroundings.push((i, iy - 1));
-                    surroundings.push((i, iy + 1));
-                }
+    pub fn get_item_at(&self, pos @ (x, y): Position) -> (Position, Option<Item>) {
+        if !self.within(pos) {
+            return (pos, None);
+        }
 
-                surroundings
-                    .iter()
-                    .filter(|&&(nx, ny)| self.is_within_grid(nx, ny))
-                    .map(|&(nx, ny)| (nx as usize, ny as usize))
-                    .collect()
-            }
-            _ => {
-                let directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)];
-                directions.iter()
-                    .map(|(dx, dy)| (ix + dx, iy + dy))
-                    .filter(|&(nx, ny)| self.is_within_grid(nx, ny))
-                    .map(|(nx, ny)| (nx as usize, ny as usize))
-                    .collect()
-            }
+        match self.grid[y as usize][x as usize] {
+            BlueprintItem::Item(item) => (pos, Some(item)),
+            BlueprintItem::LeftRedirect(l) => self.get_item_at((x - l as i32, y)),
+            _ => (pos, None)
         }
     }
+}
 
-    pub fn engine_parts(&self) -> Vec<&SchematicItem> {
-        self.iter_with_positions()
-            .filter(|&(_, x, y)| self.is_part_from_engine(x, y))
-            .map(|(item, ..)| item)
-            .collect()
+pub struct BlueprintPosIter<'a> {
+    blueprint: &'a Blueprint,
+    current_pos: (i32, i32),
+}
+
+impl<'a> BlueprintPosIter<'a> {
+    pub fn new(blueprint: &'a Blueprint) -> Self {
+        Self {
+            blueprint,
+            current_pos: (0, 0),
+        }
     }
+}
 
-    pub fn gears(&self) -> Vec<&SchematicItem> {
-        self.iter_with_positions()
-            .filter(|&(_, x, y)| self.is_part_from_engine(x, y))
-            .map(|(item, ..)| item)
-            .collect()
+impl<'a> Iterator for BlueprintPosIter<'a> {
+    type Item = (i32, i32);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.current_pos.1 >= self.blueprint.grid.len() as i32 {
+            return None;
+        }
+
+        let result = self.current_pos;
+
+        self.current_pos.0 += 1;
+        if self.current_pos.0 >= self.blueprint.grid[0].len() as i32 {
+            self.current_pos.0 = 0;
+            self.current_pos.1 += 1;
+        }
+
+        Some(result)
     }
 }
