@@ -1,33 +1,28 @@
-use std::collections::HashSet;
 use std::fs;
 use std::path::Path;
-use crate::entity::{Blueprint, Item, neighbours, Position};
 
+use crate::entity::{Blueprint, BlueprintItem, Index};
 use crate::parser;
 
-fn get_gear_ratio(pos: Position, blueprint: &Blueprint) -> u32 {
-    let mut part_ids: HashSet<Position> = HashSet::with_capacity(3);
-    for n_pos in neighbours(pos) {
-        if let (pos, Some(Item::PartLabel(_))) = blueprint.get_item_at(n_pos) {
-            part_ids.insert(pos);
-        }
-        if part_ids.len() > 2 {
-            return 0;
-        }
-    }
+fn get_gear_ratio(idx: Index, blueprint: &Blueprint) -> u32 {
+    let mut p1: Option<(Index, u32)> = None;
+    let mut p2: Option<(Index, u32)> = None;
 
-
-    if part_ids.len() == 2 {
-        return part_ids.into_iter().map(|pos| {
-            if let Some(Item::PartLabel(x)) = blueprint.get_item_at(pos).1 {
-                x
-            } else {
-                0
+    for idx_n in blueprint.neighbours(idx) {
+        if let BlueprintItem::PartLabel(label, idx_p) = blueprint.get(idx_n) {
+            if p1.is_none() {
+                p1 = Some((idx_p, label));
+            } else if p2.is_none() {
+                if p1.unwrap().0 != idx_p {
+                    p2 = Some((idx_p, label));
+                }
+            } else if (p1.unwrap().0 != idx_p) && (p2.unwrap().0 != idx_p) {
+                return 0;
             }
-        }).product();
+        }
     }
 
-    return 0;
+    return p1.unwrap_or_default().1 * p2.unwrap_or_default().1;
 }
 
 pub fn execute<P: AsRef<Path>>(path: P, name: &str, print: bool) -> u32 {
@@ -38,9 +33,9 @@ pub fn execute<P: AsRef<Path>>(path: P, name: &str, print: bool) -> u32 {
         .expect("Should have been able to parse the file");
 
     let mut result: u32 = 0;
-    for pos in blueprint.pos_iter() {
-        if let (_, Some(Item::Symbol('*'))) = blueprint.get_item_at(pos) {
-            result += get_gear_ratio(pos, &blueprint);
+    for idx in blueprint.indices() {
+        if let BlueprintItem::Symbol('*') = blueprint.get(idx) {
+            result += get_gear_ratio(idx, &blueprint);
         }
     }
 

@@ -2,15 +2,20 @@ use std::collections::HashSet;
 use std::fs;
 use std::path::Path;
 
-use crate::entity::{Blueprint, Item, neighbours, Position};
+use crate::entity::{Blueprint, BlueprintItem, Index};
 use crate::parser;
 
-fn find_parts_around(pos: Position, part_ids: &mut HashSet<Position>, blueprint: &Blueprint) {
-    for n_pos in neighbours(pos) {
-        if let (pos, Some(Item::PartLabel(_))) = blueprint.get_item_at(n_pos) {
-            part_ids.insert(pos);
+fn find_parts_around(idx: Index, part_indices: &mut HashSet<Index>, blueprint: &Blueprint) -> u32 {
+    let mut result: u32 = 0;
+    for idx_n in blueprint.neighbours(idx) {
+        if let BlueprintItem::PartLabel(label, idx_p) = blueprint.get(idx_n) {
+            if part_indices.insert(idx_p) {
+                result += label;
+            }
         }
     }
+
+    result
 }
 
 pub fn execute<P: AsRef<Path>>(path: P, name: &str, print: bool) -> u32 {
@@ -20,17 +25,11 @@ pub fn execute<P: AsRef<Path>>(path: P, name: &str, print: bool) -> u32 {
     let (_, blueprint) = parser::parse(&contents)
         .expect("Should have been able to parse the file");
 
-    let mut part_ids: HashSet<Position> = HashSet::new();
-    for pos in blueprint.pos_iter() {
-        if let (_, Some(Item::Symbol(_))) = blueprint.get_item_at(pos) {
-            find_parts_around(pos, &mut part_ids, &blueprint);
-        }
-    }
-
+    let mut part_indices: HashSet<Index> = HashSet::new();
     let mut result: u32 = 0;
-    for id in part_ids {
-        if let Some(Item::PartLabel(x)) = blueprint.get_item_at(id).1 {
-            result += x;
+    for idx in blueprint.indices() {
+        if let BlueprintItem::Symbol(_) = blueprint.get(idx) {
+            result += find_parts_around(idx, &mut part_indices, &blueprint);
         }
     }
 
