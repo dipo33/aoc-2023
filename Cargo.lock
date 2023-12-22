@@ -9,6 +9,7 @@ dependencies = [
  "day_01",
  "day_02",
  "day_03",
+ "day_04",
 ]
 
 [[package]]
@@ -32,6 +33,10 @@ dependencies = [
  "nom",
  "typed-arena",
 ]
+
+[[package]]
+name = "day_04"
+version = "0.1.0"
 
 [[package]]
 name = "lazy_static"
