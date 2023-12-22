@@ -22,23 +22,23 @@ lazy_static! {
 }
 
 trait SubstringIter {
-    fn substrings(&self) -> Box<dyn Iterator<Item=String> + '_>;
-    fn rsubstrings(&self) -> Box<dyn Iterator<Item=String> + '_>;
+    fn substrings(&self) -> Box<dyn Iterator<Item=&str> + '_>;
+    fn rsubstrings(&self) -> Box<dyn Iterator<Item=&str> + '_>;
 }
 
 impl SubstringIter for &str {
-    fn substrings(&self) -> Box<dyn Iterator<Item=String> + '_> {
+    fn substrings(&self) -> Box<dyn Iterator<Item=&str> + '_> {
         let indices = self.char_indices().map(|(i, _)| i);
-        Box::new(indices.map(move |i| self[i..].to_string()))
+        Box::new(indices.map(move |i| &self[i..]))
     }
 
-    fn rsubstrings(&self) -> Box<dyn Iterator<Item=String> + '_> {
+    fn rsubstrings(&self) -> Box<dyn Iterator<Item=&str> + '_> {
         let indices = self.char_indices().map(|(i, _)| i).rev();
-        Box::new(indices.map(move |i| self[i..].to_string()))
+        Box::new(indices.map(move |i| &self[i..]))
     }
 }
 
-fn get_digit(str: String) -> Option<char> {
+fn get_digit(str: &str) -> Option<char> {
     for key in DIGIT_LOOKUP.keys() {
         if str.starts_with(key) {
             return DIGIT_LOOKUP.get(key).cloned();
