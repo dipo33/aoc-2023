@@ -8,6 +8,7 @@ fn measure() {
     day_01::measure(attempts);
     day_02::measure(attempts);
     day_03::measure(attempts);
+    day_04::measure(attempts);
 }
 
 #[allow(dead_code)]
@@ -15,6 +16,7 @@ fn solve() {
     day_01::solve(true, true);
     day_02::solve(true, true);
     day_03::solve(true, true);
+    day_04::solve(true, true);
 }
 
 #[allow(dead_code)]
@@ -27,6 +29,9 @@ fn test() {
 
     day_03::test_first(4361);
     day_03::test_second(467835);
+
+    day_04::test_first(13);
+    day_04::test_second(30);
 }
 
 
