@@ -12,7 +12,7 @@ pub fn parse(input: &str) -> IResult<&str, Blueprint> {
         row_count += 1;
         while !line.is_empty() {
             let c = line.chars().next().unwrap();
-            if c.is_digit(10) {
+            if c.is_ascii_digit() {
                 let (_line, digit) = digit1(line)?;
 
                 let label = digit.parse::<u32>().unwrap();
