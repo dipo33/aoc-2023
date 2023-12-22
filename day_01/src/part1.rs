@@ -7,9 +7,10 @@ pub fn execute<P: AsRef<Path>>(path: P, name: &str, print: bool) -> u32 {
 
     let result: u32 = contents
         .split_whitespace()
-        .map(|str: &str| (str.chars().find(char::is_ascii_digit), str.chars().rfind(char::is_ascii_digit)))
-        .map(|(first, last)| (first.unwrap(), last.unwrap()))
-        .map(|(first, last)| (first.to_digit(10).unwrap(), last.to_digit(10).unwrap()))
+        .map(|str: &str| (
+            str.chars().find(char::is_ascii_digit).unwrap().to_digit(10).unwrap(),
+            str.chars().rfind(char::is_ascii_digit).unwrap().to_digit(10).unwrap()
+        ))
         .map(|(first, last)| first * 10 + last)
         .sum();
 
