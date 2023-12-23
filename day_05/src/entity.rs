@@ -1,7 +1,25 @@
+/// `IntervalTree` is a structure that represents an interval tree.
+///
+/// # Parameters
+///
+/// `root`: `Option<Box<IntervalNode>>` - A link to the root node of the interval tree. This field will be `None` if the interval tree is empty.
 pub struct IntervalTree {
     root: Option<Box<IntervalNode>>,
 }
 
+/// `IntervalNode` is a structure that represents a node in an interval tree.
+///
+/// # Parameters
+///
+/// `start`: `u32` - The starting value of the interval. This field is inclusive, that means the value itself is part of the interval represented by the node.
+///
+/// `end`: `u32` - The ending value of the interval. Similar to `start`, this field is inclusive meaning the value itself is also part of the interval.
+///
+/// `left`: `Option<Box<IntervalNode>>` - A link to the left child of the current node. This field will be `None` if the node does not have a left child.
+///
+/// `right`: `Option<Box<IntervalNode>>` - A link to the right child of the current node. This field will be `None` if the node does not have a right child.
+///
+/// `shift`: `i64`  - The stored value within the node. This represents the number to shift by if it falls into this interval.
 pub struct IntervalNode {
     start: u32,
     end: u32,
@@ -43,20 +61,22 @@ impl IntervalNode {
 
     fn overlaps(&self, mut start: u32, mut end: u32, overlaps: &mut Vec<(u32, u32)>) {
         if start < self.start {
+            let end = end.min(self.start - 1);
             if let Some(node) = &self.left {
-                node.overlaps(start, end.min(self.start), overlaps);
+                node.overlaps(start, end, overlaps);
             } else {
-                overlaps.push((start, end.min(self.start)));
+                overlaps.push((start, end));
             }
         }
         if end > self.end {
+            let start = start.max(self.end + 1);
             if let Some(node) = &self.right {
-                node.overlaps(start.max(self.end), end, overlaps);
+                node.overlaps(start, end, overlaps);
             } else {
-                overlaps.push((start.max(self.end), end));
+                overlaps.push((start, end));
             }
         }
-        if start < self.end && end > self.start {
+        if start <= self.end && end >= self.start {
             start = start.max(self.start);
             end = end.min(self.end);
             overlaps.push((self.do_shift(start), self.do_shift(end)));
@@ -90,7 +110,7 @@ impl IntervalTree {
         while let Some(node) = current {
             if idx < node.start {
                 current = &node.left;
-            } else if idx >= node.end {
+            } else if idx > node.end {
                 current = &node.right;
             } else {
                 return node.do_shift(idx);

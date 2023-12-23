@@ -13,7 +13,7 @@ pub fn execute<P: AsRef<Path>>(path: P, name: &str, print: bool) -> u32 {
     let mut lowest_location: Option<u32> = None;
     for i in 0..almanac.seeds.len() / 2 {
         let (current, length) = (almanac.seeds[i * 2], almanac.seeds[i * 2 + 1]);
-        let mut intervals = vec![(current, current + length)];
+        let mut intervals = vec![(current, current + (length - 1))];
         for interval_tree in almanac.interval_trees.iter() {
             let mut new_intervals = Vec::new();
             for (start, end) in intervals {

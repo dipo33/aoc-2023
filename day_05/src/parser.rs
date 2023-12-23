@@ -37,6 +37,6 @@ fn interval(input: &str) -> IResult<&str, (u32, u32, u32)> {
 
 
 fn insert_interval(mut tree: IntervalTree, (dest, source, length): (u32, u32, u32)) -> IntervalTree {
-    tree.insert(source, source + length, dest as i64 - source as i64);
+    tree.insert(source, source + (length - 1), dest as i64 - source as i64);
     tree
 }
