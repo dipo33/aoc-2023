@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [workspace]
-members = [".", "parsers", "day_01", "day_02", "day_03", "day_04", "day_05"]
+members = [".", "parsers", "day_01", "day_02", "day_03", "day_04", "day_05", "day_06"]
 
 [workspace.dependencies]
 lazy_static = "1.4.0"
@@ -17,3 +17,4 @@ day_02 = { path = "day_02" }
 day_03 = { path = "day_03" }
 day_04 = { path = "day_04" }
 day_05 = { path = "day_05" }
+day_06 = { path = "day_06" }
