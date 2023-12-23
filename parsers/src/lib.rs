@@ -1,9 +1,16 @@
 use std::str::FromStr;
 
-use nom::{InputLength, IResult, Parser};
+use nom::{error, InputLength, IResult, Parser};
 use nom::character::complete::digit1;
 use nom::combinator::map;
 use nom::error::{ErrorKind, ParseError};
+
+/// Holds the result of parsing functions
+///
+/// It depends on the output type `O`
+///
+/// The `Ok` side contains the produced value. The `Err` side contains an instance of `nom::Err`.
+pub type ParseResult<'a, O> = Result<O, nom::Err<error::Error<&'a str>>>;
 
 /// Parses an integer value from the given input string.
 ///
