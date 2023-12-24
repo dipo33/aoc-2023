@@ -12,6 +12,7 @@ dependencies = [
  "day_04",
  "day_05",
  "day_06",
+ "day_07",
 ]
 
 [[package]]
@@ -59,6 +60,10 @@ dependencies = [
  "nom",
  "parsers",
 ]
+
+[[package]]
+name = "day_07"
+version = "0.1.0"
 
 [[package]]
 name = "lazy_static"
