@@ -4,6 +4,7 @@ mod part1;
 mod part2;
 mod entity;
 mod parser;
+mod common;
 
 
 pub fn test_first(result: u32) {
