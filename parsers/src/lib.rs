@@ -30,6 +30,38 @@ pub fn integer<T>(input: &str) -> IResult<&str, T>
     map(digit1, |s: &str| s.parse::<T>().unwrap())(input)
 }
 
+/// Alternates between two parsers to produce a list of elements until [`nom::Err::Error`], calling `g` to gather the results.
+///
+/// Fails if the element parser does not produce at least one element.
+///
+/// This stops when either parser returns [`nom::Err::Error`]  and returns the results that were accumulated. To instead chain an error up, see
+/// [`cut`][crate::combinator::cut].
+///
+/// # Arguments
+/// * `sep` Parses the separator between list elements.
+/// * `f` Parses the elements of the collection.
+/// * `init` A function returning the initial value.
+/// * `g` The function that combines a result of `f` with
+///       the current accumulator.
+/// ```rust
+/// use std::collections::HashSet;
+/// use nom::{Err, error::{Error, ErrorKind}, Needed, IResult};
+/// use nom::bytes::complete::tag;
+/// use parsers::fold_separated_list1;
+///
+/// fn parser(s: &str) -> IResult<&str, HashSet<&str>> {
+///   fold_separated_list1(tag("|"), tag("abc"), HashSet::new, |mut acc, val| {
+///     acc.insert(val);
+///     acc
+///   })(s)
+/// }
+///
+/// assert_eq!(parser("abc|abc|abc"), Ok(("", HashSet::from(["abc"]))));
+/// assert_eq!(parser("abc123abc"), Ok(("123abc", HashSet::from(["abc"]))));
+/// assert_eq!(parser("abc|def"), Ok(("|def", HashSet::from(["abc"]))));
+/// assert_eq!(parser(""), Err(Err::Error(Error::new("", ErrorKind::Tag))));
+/// assert_eq!(parser("def|abc"), Err(Err::Error(Error::new("def|abc", ErrorKind::Tag))));
+/// ```
 pub fn fold_separated_list1<I, O, O2, E, F, G, H, S, R>(
     mut sep: S,
     mut f: F,
