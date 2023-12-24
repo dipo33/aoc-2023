@@ -1,18 +1,15 @@
 use std::fs;
 use std::path::Path;
-use std::time::Instant;
 
 use crate::entity::Bidder;
 use crate::parser;
 
-#[allow(unused_variables)]
 pub fn execute<P: AsRef<Path>>(path: P, name: &str, print: bool) -> u32 {
     let contents: String = fs::read_to_string(path)
         .expect("Should have been able to read the file");
 
-    let mut bidders: Vec<Bidder> = parser::parse(&contents)
+    let mut bidders: Vec<Bidder> = parser::parse(&contents, false)
         .expect("Should have been able to parse the file");
-    let bef = Instant::now();
     bidders.sort_by(|a, b| b.hand.cmp(&a.hand));
     bidders.reverse();
 

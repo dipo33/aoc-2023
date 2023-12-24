@@ -1,11 +1,13 @@
-use std::cmp::Ordering;
+use std::cmp::{max_by_key, Ordering};
+use std::collections::HashMap;
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Hash, Copy, Clone)]
 pub enum Card {
     Ace,
     King,
     Queen,
     Jack,
+    Joker,
     Number(u8),
 }
 
@@ -39,14 +41,19 @@ impl Card {
             Card::King => 13,
             Card::Queen => 12,
             Card::Jack => 11,
+            Card::Joker => 0,
             Card::Number(val) => val,
         }
     }
 }
 
 impl Hand {
-    pub fn new(cards: [Card; 5]) -> Hand {
-        let hand_type = determine_hand_type(&cards);
+    pub fn new(cards: [Card; 5], enable_joker: bool) -> Hand {
+        let hand_type = if enable_joker {
+            determine_hand_type(&convert_jokers(cards))
+        } else {
+            determine_hand_type(&cards)
+        };
         Hand { cards, hand_type }
     }
 }
@@ -87,6 +94,45 @@ impl PartialOrd for Hand {
     }
 }
 
+fn convert_jokers(mut cards: [Card; 5]) -> [Card; 5] {
+    let mut counts: HashMap<Card, u8> = HashMap::new();
+    for card in cards {
+        *counts.entry(card).or_insert(0) += 1;
+    }
+    let jokers = counts.remove(&Card::Joker).unwrap_or(0);
+    if jokers == 0 {
+        return cards;
+    }
+
+    let card_to_replace_with = find_most_common_highest_non_joker_card(counts);
+    for i in 0..5 {
+        if cards[i] == Card::Joker {
+            cards[i] = card_to_replace_with;
+        }
+    }
+
+    cards
+}
+
+fn find_most_common_highest_non_joker_card(counts: HashMap<Card, u8>) -> Card {
+    counts.into_iter()
+        .fold((Card::Ace, 0), |current @ (card, count), other @ (other_card, other_count)| {
+            if card == other_card {
+                return (card, count + other_count);
+            }
+
+            if count > other_count {
+                current
+            } else if other_count > count {
+                other
+            } else {
+                max_by_key(current, other, |(card, _)| {
+                    card.strength()
+                })
+            }
+        }).0
+}
+
 fn determine_hand_type(cards: &[Card; 5]) -> HandType {
     let mut counts = [0; 15];
     for card in cards {
@@ -95,8 +141,9 @@ fn determine_hand_type(cards: &[Card; 5]) -> HandType {
 
     let mut pairs = 0;
     let mut three_of_a_kind = false;
-    for count in counts.iter() {
-        match *count {
+    for i in 2..15 {
+        let count = counts[i];
+        match count {
             2 => pairs += 1,
             3 => three_of_a_kind = true,
             4 => return HandType::FourOfAKind,

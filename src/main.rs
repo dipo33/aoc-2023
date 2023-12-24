@@ -22,7 +22,7 @@ fn solve() {
     day_04::solve(true, true);
     day_05::solve(true, true);
     day_06::solve(true, true);
-    day_07::solve(true, false);
+    day_07::solve(true, true);
 }
 
 #[allow(dead_code)]
@@ -46,6 +46,7 @@ fn test() {
     day_06::test_second(71503);
 
     day_07::test_first(6440);
+    day_07::test_second(5905);
 }
 
 
