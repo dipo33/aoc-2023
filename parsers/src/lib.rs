@@ -1,7 +1,7 @@
 use std::str::FromStr;
 
 use nom::{error, InputLength, IResult, Parser};
-use nom::character::complete::digit1;
+use nom::character::complete::{digit1, satisfy};
 use nom::combinator::map;
 use nom::error::{ErrorKind, ParseError};
 
@@ -28,6 +28,16 @@ pub fn integer<T>(input: &str) -> IResult<&str, T>
         <T as FromStr>::Err: std::fmt::Debug,
 {
     map(digit1, |s: &str| s.parse::<T>().unwrap())(input)
+}
+
+pub fn digit_char(input: &str) -> IResult<&str, char>
+{
+    satisfy(|c| c.is_ascii_digit())(input)
+}
+
+pub fn digit(input: &str) -> IResult<&str, u8>
+{
+    map(digit_char, |c: char| c.to_digit(10).unwrap() as u8)(input)
 }
 
 /// Alternates between two parsers to produce a list of elements until [`nom::Err::Error`], calling `g` to gather the results.
