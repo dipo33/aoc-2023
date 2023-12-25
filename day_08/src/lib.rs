@@ -4,11 +4,17 @@ mod part1;
 mod part2;
 
 
-pub fn test_first(result: u32) {
+pub fn test_first(result_a: u32, result_b: u32) {
     assert_eq!(
-        part1::execute("day_08/inputs/example1.txt", "", false),
-        result,
-        "Day 08 - Part 01 Example Test",
+        part1::execute("day_08/inputs/example1_a.txt", "", false),
+        result_a,
+        "Day 08 - Part 01 Example A Test",
+    );
+
+    assert_eq!(
+        part1::execute("day_08/inputs/example1_b.txt", "", false),
+        result_b,
+        "Day 08 - Part 01 Example B Test",
     );
 }
 
@@ -24,7 +30,8 @@ pub fn solve(first: bool, second: bool) {
     println!("\n-------- [[ Day 08 ]] --------");
     if first {
         println!("Part 1:");
-        part1::execute("day_08/inputs/example1.txt", "    Example", true);
+        part1::execute("day_08/inputs/example1_a.txt", "    Example A", true);
+        part1::execute("day_08/inputs/example1_b.txt", "    Example B", true);
         part1::execute("day_08/inputs/input.txt", "   ", true);
     }
 
