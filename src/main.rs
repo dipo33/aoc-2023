@@ -1,7 +1,3 @@
-use day_01;
-use day_02;
-use day_03;
-
 #[allow(dead_code)]
 fn measure() {
     let attempts: u32 = 100;
@@ -12,6 +8,7 @@ fn measure() {
     day_05::measure(attempts);
     day_06::measure(attempts);
     day_07::measure(attempts);
+    day_08::measure(attempts);
 }
 
 #[allow(dead_code)]
@@ -23,6 +20,7 @@ fn solve() {
     day_05::solve(true, true);
     day_06::solve(true, true);
     day_07::solve(true, true);
+    day_08::solve(true, true);
 }
 
 #[allow(dead_code)]
@@ -47,6 +45,9 @@ fn test() {
 
     day_07::test_first(6440);
     day_07::test_second(5905);
+
+    day_08::test_first(2, 6);
+    day_08::test_second(6);
 }
 
 

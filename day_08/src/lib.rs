@@ -1,7 +1,9 @@
 use std::time::{Duration, Instant};
 
-mod part1;
-mod part2;
+pub mod part1;
+pub mod part2;
+pub mod entity;
+pub mod parser;
 
 
 pub fn test_first(result_a: u32, result_b: u32) {
@@ -18,7 +20,7 @@ pub fn test_first(result_a: u32, result_b: u32) {
     );
 }
 
-pub fn test_second(result: u32) {
+pub fn test_second(result: usize) {
     assert_eq!(
         part2::execute("day_08/inputs/example2.txt", "", false),
         result,
