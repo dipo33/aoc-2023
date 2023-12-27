@@ -1,8 +1,8 @@
 use std::time::{Duration, Instant};
 
-mod part1;
-mod part2;
-mod part2_trie;
+pub mod part1;
+pub mod part2;
+pub mod part2_trie;
 
 
 pub fn test_first(result: u32) {

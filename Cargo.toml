@@ -15,10 +15,6 @@ num = "0.4.1"
 [dev-dependencies]
 criterion = "0.5.1"
 
-[[bench]]
-name = "day_08"
-harness = false
-
 [dependencies]
 day_01 = { path = "day_01" }
 day_02 = { path = "day_02" }
@@ -28,3 +24,35 @@ day_05 = { path = "day_05" }
 day_06 = { path = "day_06" }
 day_07 = { path = "day_07" }
 day_08 = { path = "day_08" }
+
+[[bench]]
+name = "day_01"
+harness = false
+
+[[bench]]
+name = "day_02"
+harness = false
+
+[[bench]]
+name = "day_03"
+harness = false
+
+[[bench]]
+name = "day_04"
+harness = false
+
+[[bench]]
+name = "day_05"
+harness = false
+
+[[bench]]
+name = "day_06"
+harness = false
+
+[[bench]]
+name = "day_07"
+harness = false
+
+[[bench]]
+name = "day_08"
+harness = false

@@ -1,9 +1,9 @@
 use std::time::{Duration, Instant};
 
-mod part1;
-mod part2;
+pub mod part1;
+pub mod part2;
 mod entity;
-mod parser;
+pub mod parser;
 
 
 pub fn test_first(result: u32) {

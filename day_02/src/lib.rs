@@ -1,8 +1,8 @@
 use std::time::{Duration, Instant};
 
-mod part1;
-mod part2;
-mod parser;
+pub mod part1;
+pub mod part2;
+pub mod parser;
 mod entity;
 
 
