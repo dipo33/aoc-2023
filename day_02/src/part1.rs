@@ -8,7 +8,7 @@ pub fn execute<P: AsRef<Path>>(path: P, name: &str, print: bool) -> u32 {
     let contents: String = fs::read_to_string(path)
         .expect("Should have been able to read the file");
 
-    let (_, games) = parser::parse(contents.as_str())
+    let games = parser::parse(contents.as_str())
         .unwrap();
 
     let result = games.iter()

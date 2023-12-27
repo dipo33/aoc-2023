@@ -4,11 +4,13 @@ use nom::character::complete::digit1;
 use nom::combinator::{map, map_res};
 use nom::IResult;
 use nom::multi::separated_list1;
+use parsers::ParseResult;
 
 use crate::entity::{Color, Cube, Game, Play};
 
-pub fn parse(input: &str) -> IResult<&str, Vec<Game>> {
-    separated_list1(tag("\n"), game)(input)
+pub fn parse(input: &str) -> ParseResult<Vec<Game>> {
+    let (_, games) = separated_list1(tag("\n"), game)(input)?;
+    Ok(games)
 }
 
 fn game(input: &str) -> IResult<&str, Game> {

@@ -5,4 +5,5 @@ edition = "2021"
 
 [dependencies]
 nom.workspace = true
+parsers.workspace = true
 typed-arena.workspace = true

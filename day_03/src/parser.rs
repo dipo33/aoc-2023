@@ -1,9 +1,10 @@
-use nom::IResult;
 use nom::character::complete::digit1;
+
+use parsers::ParseResult;
 
 use crate::entity::{Blueprint, BlueprintItem};
 
-pub fn parse(input: &str) -> IResult<&str, Blueprint> {
+pub fn parse(input: &str) -> ParseResult<Blueprint> {
     let mut grid: Vec<BlueprintItem> = Vec::with_capacity(input.len());
     let mut idx = 0;
     let mut row_count = 0;
@@ -33,5 +34,5 @@ pub fn parse(input: &str) -> IResult<&str, Blueprint> {
         }
     }
 
-    Ok(("", Blueprint::new(grid, idx / (row_count - 1))))
+    Ok(Blueprint::new(grid, idx / (row_count - 1)))
 }

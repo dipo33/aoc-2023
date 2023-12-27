@@ -7,7 +7,7 @@ pub fn execute<P: AsRef<Path>>(path: P, name: &str, print: bool) -> u32 {
     let contents: String = fs::read_to_string(path)
         .expect("Should have been able to read the file");
 
-    let (_, almanac) = parser::parse(&contents)
+    let almanac = parser::parse(&contents)
         .expect("Should have been able to parse the input file");
 
     let mut lowest_location: Option<u32> = None;

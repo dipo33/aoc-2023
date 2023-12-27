@@ -23,7 +23,7 @@ pub fn execute<P: AsRef<Path>>(path: P, name: &str, print: bool) -> u32 {
     let contents: String = fs::read_to_string(path)
         .expect("Should have been able to read the file");
 
-    let (_, cards) = parser::parse(&contents)
+    let cards = parser::parse(&contents)
         .expect("Should have been able to parse the file");
     let result: u32 = cards.iter()
         .map(points)

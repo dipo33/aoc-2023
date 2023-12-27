@@ -3,12 +3,13 @@ use nom::character::complete::{char, space1};
 use nom::IResult;
 use nom::multi::separated_list1;
 
-use parsers::uint;
+use parsers::{ParseResult, uint};
 
 use crate::entity::Card;
 
-pub fn parse(input: &str) -> IResult<&str, Vec<Card>> {
-    separated_list1(char('\n'), card)(input)
+pub fn parse(input: &str) -> ParseResult<Vec<Card>> {
+    let (_, cards) = separated_list1(char('\n'), card)(input)?;
+    Ok(cards)
 }
 
 fn card(input: &str) -> IResult<&str, Card> {

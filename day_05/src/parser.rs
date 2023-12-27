@@ -4,16 +4,16 @@ use nom::IResult;
 use nom::multi::{many_till, separated_list1};
 use nom::sequence::tuple;
 
-use parsers::{fold_separated_list1, uint};
+use parsers::{fold_separated_list1, ParseResult, uint};
 
 use crate::entity::{Almanac, IntervalTree};
 
-pub fn parse(input: &str) -> IResult<&str, Almanac> {
+pub fn parse(input: &str) -> ParseResult<Almanac> {
     let (input, seeds) = seeds(input)?;
     let (input, _) = newline(input)?;
-    let (input, interval_trees) = separated_list1(newline, interval_tree)(input)?;
+    let (_, interval_trees) = separated_list1(newline, interval_tree)(input)?;
 
-    Ok((input, Almanac { seeds, interval_trees }))
+    Ok(Almanac { seeds, interval_trees })
 }
 
 fn seeds(input: &str) -> IResult<&str, Vec<u32>> {
