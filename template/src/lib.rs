@@ -1,26 +1,7 @@
-use std::time::{Duration, Instant};
-
 pub mod part1;
 pub mod part2;
 #[cfg(test)]
 mod tests;
-
-
-pub fn test_first(result: %%RESULT_TYPE%%) {
-    assert_eq!(
-        part1::execute("%%PACKAGE_NAME%%/inputs/example1.txt", "", false),
-        result,
-        "%%DISPLAY_NAME%% - Part 01 Example Test",
-    );
-}
-
-pub fn test_second(result: %%RESULT_TYPE%%) {
-    assert_eq!(
-        part2::execute("%%PACKAGE_NAME%%/inputs/example2.txt", "", false),
-        result,
-        "%%DISPLAY_NAME%% - Part 02 Example Test",
-    );
-}
 
 pub fn solve(first: bool, second: bool) {
     println!("\n-------- [[ %%DISPLAY_NAME%% ]] --------");
@@ -38,26 +19,4 @@ pub fn solve(first: bool, second: bool) {
         part2::execute("%%PACKAGE_NAME%%/inputs/example2.txt", "    Example", true);
         part2::execute("%%PACKAGE_NAME%%/inputs/input.txt", "   ", true);
     }
-}
-
-pub fn measure(attempts: u32) -> (Duration, Duration) {
-    println!("\n-------- [[ %%DISPLAY_NAME%% ]] --------");
-
-    let beginning = Instant::now();
-    for _ in 0..attempts {
-        part1::execute("%%PACKAGE_NAME%%/inputs/input.txt", "", false);
-    }
-    let average_1 = beginning.elapsed() / attempts;
-    println!("Part 1 Average Time: {:?}", average_1);
-
-
-    let beginning = Instant::now();
-    for _ in 0..attempts {
-        part2::execute("%%PACKAGE_NAME%%/inputs/input.txt", "", false);
-    }
-    let average_2 = beginning.elapsed() / attempts;
-    println!("Part 2 Average Time: {:?}", average_2);
-    println!("Attempts: {}", attempts);
-
-    (average_1, average_2)
 }
