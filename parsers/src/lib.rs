@@ -1,3 +1,4 @@
+use std::ops::Neg;
 use std::str::FromStr;
 
 use nom::{error, InputLength, IResult, Parser};
@@ -28,6 +29,27 @@ pub fn uint<T>(input: &str) -> IResult<&str, T>
         <T as FromStr>::Err: std::fmt::Debug,
 {
     combinator::map(complete::digit1, |s: &str| s.parse::<T>().unwrap())(input)
+}
+
+/// Parses a signed integer from the given input string.
+///
+/// # Arguments
+///
+/// * `input` - The input string to parse.
+///
+/// # Returns
+///
+/// Returns a `Result` indicating the success or failure of the parsing operation.
+/// If the input string is successfully parsed into an integer value, the result is a tuple containing the remaining input string and the parsed integer
+pub fn int<T>(input: &str) -> IResult<&str, T>
+    where
+        T: Neg<Output=T> + From<usize>,
+{
+    let (input, sign) = combinator::opt(complete::char('-'))(input)?;
+    let (input, num) = uint::<usize>(input)?;
+    let num: T = if sign.is_some() { -T::from(num) } else { T::from(num) };
+
+    Ok((input, num))
 }
 
 pub fn digit_char(input: &str) -> IResult<&str, char>
