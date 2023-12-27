@@ -3,6 +3,8 @@ use std::time::{Duration, Instant};
 pub mod part1;
 pub mod part2;
 pub mod part2_trie;
+#[cfg(test)]
+mod tests;
 
 
 pub fn test_first(result: u32) {

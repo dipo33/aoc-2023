@@ -5,6 +5,8 @@ pub mod part2;
 mod entity;
 pub mod parser;
 mod common;
+#[cfg(test)]
+mod tests;
 
 
 pub fn test_first(result: u32) {
