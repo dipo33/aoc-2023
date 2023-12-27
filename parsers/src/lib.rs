@@ -12,7 +12,7 @@ use nom::error::{ErrorKind, ParseError};
 /// The `Ok` side contains the produced value. The `Err` side contains an instance of `nom::Err`.
 pub type ParseResult<'a, O> = Result<O, nom::Err<error::Error<&'a str>>>;
 
-/// Parses an integer value from the given input string.
+/// Parses an unsigned integer from the given input string.
 ///
 /// # Arguments
 ///
