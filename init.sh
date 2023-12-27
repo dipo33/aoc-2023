@@ -21,6 +21,10 @@ cp -r "$TEMPLATE_DIR" "$PACKAGE_NAME"
 find "$PACKAGE_NAME" -type f -exec sed -i "s/%%PACKAGE_NAME%%/$PACKAGE_NAME/g" {} +
 find "$PACKAGE_NAME" -type f -exec sed -i "s/%%DISPLAY_NAME%%/$DISPLAY_NAME/g" {} +
 find "$PACKAGE_NAME" -type f -exec sed -i "s/%%RESULT_TYPE%%/$RESULT_TYPE/g" {} +
+find "$PACKAGE_NAME" -type f -exec sed -i "s/%%FORMATTED_DAY%%/$FORMATTED_DAY/g" {} +
+
+# Move the benchmark file to the correct location
+mv "$PACKAGE_NAME/bench.rs" "benches/$PACKAGE_NAME.rs"
 
 # Add the new project as dependency to the root cargo.toml
 printf "\n" >> Cargo.toml
@@ -42,6 +46,14 @@ mv $TMP_CARGO_TOML_PATH $CARGO_TOML_PATH
 
 # Replace placeholders inside root Cargo.toml
 sed -i "s/%%PACKAGE_NAME%%/$PACKAGE_NAME/g" $CARGO_TOML_PATH
+
+# Append bench into Cargo.toml
+{
+  echo ""
+  echo "[[bench]]"
+  echo "name = \"$PACKAGE_NAME\""
+  echo "harness = false"
+} >> $CARGO_TOML_PATH
 
 # Download task input
 source .env
