@@ -24,7 +24,7 @@ pub fn parse(input: &str) -> ParseResult<LabeledMap> {
         },
     )(input)?;
 
-    Ok(LabeledMap { graph: graph, directions })
+    Ok(LabeledMap { graph, directions })
 }
 
 fn direction(input: &str) -> IResult<&str, Direction> {
