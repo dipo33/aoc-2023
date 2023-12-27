@@ -80,6 +80,7 @@ dependencies = [
  "day_06",
  "day_07",
  "day_08",
+ "day_09",
 ]
 
 [[package]]
@@ -324,6 +325,10 @@ dependencies = [
  "num",
  "parsers",
 ]
+
+[[package]]
+name = "day_09"
+version = "0.1.0"
 
 [[package]]
 name = "either"
