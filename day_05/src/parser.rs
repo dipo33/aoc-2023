@@ -4,7 +4,7 @@ use nom::IResult;
 use nom::multi::{many_till, separated_list1};
 use nom::sequence::tuple;
 
-use parsers::{fold_separated_list1, integer};
+use parsers::{fold_separated_list1, uint};
 
 use crate::entity::{Almanac, IntervalTree};
 
@@ -18,7 +18,7 @@ pub fn parse(input: &str) -> IResult<&str, Almanac> {
 
 fn seeds(input: &str) -> IResult<&str, Vec<u32>> {
     let (input, _) = tag("seeds: ")(input)?;
-    separated_list1(space1, integer::<u32>)(input)
+    separated_list1(space1, uint::<u32>)(input)
 }
 
 fn interval_tree(input: &str) -> IResult<&str, IntervalTree> {
@@ -30,7 +30,7 @@ fn interval_tree(input: &str) -> IResult<&str, IntervalTree> {
 
 fn interval(input: &str) -> IResult<&str, (u32, u32, u32)> {
     let (input, (destination, _, source, _, length)) =
-        tuple((integer::<u32>, space1, integer::<u32>, space1, integer::<u32>))(input)?;
+        tuple((uint::<u32>, space1, uint::<u32>, space1, uint::<u32>))(input)?;
 
     Ok((input, (destination, source, length)))
 }

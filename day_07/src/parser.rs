@@ -5,7 +5,7 @@ use nom::IResult;
 use nom::multi::separated_list1;
 use nom::sequence::tuple;
 
-use parsers::{digit, integer, ParseResult};
+use parsers::{digit, uint, ParseResult};
 
 use crate::entity::{Bidder, Card, Hand};
 
@@ -18,7 +18,7 @@ fn bidder(enable_joker: bool) -> impl FnMut(&str) -> IResult<&str, Bidder> {
     move |input: &str| {
         let (input, hand) = hand(enable_joker)(input)?;
         let (input, _) = space1(input)?;
-        let (input, bid) = integer::<u32>(input)?;
+        let (input, bid) = uint::<u32>(input)?;
         Ok((input, Bidder { hand, bid }))
     }
 }

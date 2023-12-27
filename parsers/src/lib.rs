@@ -22,7 +22,7 @@ pub type ParseResult<'a, O> = Result<O, nom::Err<error::Error<&'a str>>>;
 ///
 /// Returns a `Result` indicating the success or failure of the parsing operation.
 /// If the input string is successfully parsed into an integer value, the result is a tuple containing the remaining input string and the parsed integer
-pub fn integer<T>(input: &str) -> IResult<&str, T>
+pub fn uint<T>(input: &str) -> IResult<&str, T>
     where
         T: FromStr,
         <T as FromStr>::Err: std::fmt::Debug,
