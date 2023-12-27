@@ -2,6 +2,7 @@ use std::fmt::{Display, Formatter};
 
 use clap::{Parser, ValueEnum};
 use clap::builder::PossibleValue;
+use colored::*;
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 enum Part {
@@ -77,5 +78,23 @@ fn main() {
         }
     } else if let Some(day) = args.day {
         execute(day, args.part);
+    } else {
+        eprintln!("{}", format_error_message());
+        std::process::exit(1);
     }
+}
+
+fn format_error_message() -> String {
+    let error = "error:".red().bold();
+    let day = "--day <DAY>".green().bold();
+    let all = "--all".green().bold();
+    let help = "--help".cyan();
+
+    format!(
+        "{error} one of the following mutually exclusive required arguments was not provided:\n  {day}\n  {all}\n\nFor more information, try '{help}'.\n",
+        error = error,
+        day = day,
+        all = all,
+        help = help
+    )
 }
