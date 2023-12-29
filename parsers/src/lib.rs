@@ -43,10 +43,10 @@ pub fn uint<T>(input: &str) -> IResult<&str, T>
 /// If the input string is successfully parsed into an integer value, the result is a tuple containing the remaining input string and the parsed integer
 pub fn int<T>(input: &str) -> IResult<&str, T>
     where
-        T: Neg<Output=T> + From<usize>,
+        T: Neg<Output=T> + From<u32>,
 {
     let (input, sign) = combinator::opt(complete::char('-'))(input)?;
-    let (input, num) = uint::<usize>(input)?;
+    let (input, num) = uint::<u32>(input)?;
     let num: T = if sign.is_some() { -T::from(num) } else { T::from(num) };
 
     Ok((input, num))
