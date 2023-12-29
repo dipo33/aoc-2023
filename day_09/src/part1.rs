@@ -3,16 +3,15 @@ use std::path::Path;
 use crate::common;
 
 fn process_row(row: &mut Vec<i64>) -> i64 {
-    let mut end = row.len() - 1;
-    while end >= 1 {
-        for i in 0..end {
-            // TODO: Make more efficient by skipping when all are zero
+    let mut rightmost_idx = row.len() - 1;
+    while rightmost_idx > 0 {
+        for i in 0..rightmost_idx {
             let a = row[i];
             let b = row[i + 1];
 
             row[i] = b - a;
         }
-        end -= 1;
+        rightmost_idx -= 1;
     }
 
     row.iter().sum()
