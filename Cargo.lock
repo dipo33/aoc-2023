@@ -331,6 +331,10 @@ dependencies = [
 [[package]]
 name = "day_09"
 version = "0.1.0"
+dependencies = [
+ "nom",
+ "parsers",
+]
 
 [[package]]
 name = "either"

@@ -66,6 +66,7 @@ fn execute(day: u8, part: Part) {
         6 => day_06::solve(part1, part2),
         7 => day_07::solve(part1, part2),
         8 => day_08::solve(part1, part2),
+        9 => day_09::solve(part1, part2),
         _ => panic!("invalid day: {}", day),
     }
 }
@@ -73,7 +74,7 @@ fn execute(day: u8, part: Part) {
 fn main() {
     let args = Args::parse();
     if args.all {
-        for day in 1..=8 {
+        for day in 1..=9 {
             execute(day, args.part);
         }
     } else if let Some(day) = args.day {

@@ -4,7 +4,7 @@ use crate::{part1, part2};
 fn day09_part1_example() {
     assert_eq!(
         part1::execute("inputs/example1.txt", "", false),
-        u32::default(),
+        114,
         "Day 09 - Part 01 Example Test",
     );
 }
@@ -13,7 +13,7 @@ fn day09_part1_example() {
 fn day09_part2_example() {
     assert_eq!(
         part2::execute("inputs/example2.txt", "", false),
-        u32::default(),
+        2,
         "Day 09 - Part 02 Example Test",
     );
 }

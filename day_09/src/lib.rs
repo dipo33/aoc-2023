@@ -2,6 +2,8 @@ pub mod part1;
 pub mod part2;
 #[cfg(test)]
 mod tests;
+pub mod parser;
+mod common;
 
 pub fn solve(first: bool, second: bool) {
     println!("\n-------- [[ Day 09 ]] --------");
