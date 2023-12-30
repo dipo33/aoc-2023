@@ -27,6 +27,18 @@ fn my_benches(c: &mut Criterion) {
             });
         });
     });
+
+    c.bench_function("d10aux-landscape::new", |b| {
+        let contents: String = std::fs::read_to_string("./day_10/inputs/input.txt")
+            .expect("Should have been able to read the file");
+        b.iter_batched(|| {
+            day_10::parser::parse(contents.as_str()).unwrap().fields
+        }, |fields| {
+            black_box({
+                day_10::entity::Landscape::new(fields);
+            });
+        }, criterion::BatchSize::SmallInput);
+    });
 }
 
 criterion_group!(benches, my_benches);
